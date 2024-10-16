@@ -1,0 +1,2 @@
+create or replace trigger updateTrig after update on library for each row begin insert into lib_audit(roll_no,name,date_of_issue,book_name,status,author,operation_type) values(:old.roll_no,:old.name,:old.date_of_issue,:old.book_name,:old.status,:old.author,'update'); end;
+insert into library(roll_no,name,date_of_issue,book_name,status,author) values(1,'alice',to_date('2023-4-1','yy-mm-dd'),'firebolt','avaliable','michel'); 
