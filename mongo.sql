@@ -1,0 +1,1 @@
+db.latest.insertMany([{id:"1001",name:"tommy",salary:12000,dept:"IT"},{id:"1002",name:"michel",salary:14000,dept:"CRIME"}]);
