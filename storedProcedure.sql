@@ -71,3 +71,51 @@ begin
  end;
 
  /
+
+
+ --according to practical latest updated procedure code
+
+--  1) create table first for the question
+
+create table students (rno number,name varchar(50),total number,class varchar(50));
+
+create or replace procedure calcMarks(total in number,name in varchar,grade out varchar) as
+begin
+    if total>=990 and total <=1500 then
+        grade:='dist'; 
+    elsif total<=989 and total >=900 then
+        grade:='first class';
+    elsif total <=899 and total >=825 then
+        grade:='hsec class';
+    elsif total<=824 and total >=600 then
+        grade:='sec class';
+    else
+        grade:='fail';
+    end if;
+end;
+/
+
+//another best way
+
+create or replace procedure calcGrade as
+begin
+    for rec in(select rno,total from students where class is NULL) loop
+         if rec.total>=990 and rec.total <=1500 then
+            --write update query as it is here without any ....
+            update students set class = 'dist' where rno=rec.rno;
+         elsif rec.total<=989 and rec.total >=900 then
+             update students set class = 'first class' where rno=rec.rno;
+         elsif rec.total <=899 and rec.total >=825 then
+             update students set class = 'dihsec class' where rno=rec.rno;
+         elsif rec.total<=824 and rec.total >=600 then
+             update students set class = 'sec class' where rno=rec.rno;
+         else
+          update students set class = 'FAIL' where rno=rec.rno;
+         end if;
+         end loop;
+         commit;
+end;
+/
+
+//for execute use
+EXEC calcGrade;
