@@ -166,6 +166,61 @@ VALUES (2, 102, TO_DATE('2024-01-10', 'YYYY-MM-DD'), TO_DATE('2024-02-25', 'YYYY
 EXEC issueBook(1, 101, SYSDATE);
 
 
+//attandance calcualation procedure
+
+--table format
+CREATE TABLE Student (
+    Roll NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    Attendance NUMBER,
+    Status VARCHAR2(20)
+);
+
+//dummy values to insert
+INSERT INTO Student (Roll, Name, Attendance, Status)
+VALUES (1, 'John Doe', 80, 'Not Detained');
+
+INSERT INTO Student (Roll, Name, Attendance, Status)
+VALUES (2, 'Jane Smith', 60, 'Not Detained');
+
+INSERT INTO Student (Roll, Name, Attendance, Status)
+VALUES (3, 'Alice Brown', 90, 'Not Detained');
+
+INSERT INTO Student (Roll, Name, Attendance, Status)
+VALUES (4, 'Bob White', 50, 'Not Detained');
+
+--procedure to check his term attandance status
+--idea is take his roll number and fetch his attandance and then update status or display msg anything
+set serveroutput on;
+create or replace procedure chkAttendance(rno in number) as attendance number;
+begin 
+    --fetch his attancance in precntages assuming 
+     select Attendance into attendance from Student where  Roll=rno;
+
+     --check attendance and set status
+     if attendance < 75 then
+        DBMS_OUTPUT.PUT_LINE('TERM NOT GRANTED');
+     else
+         DBMS_OUTPUT.PUT_LINE('TERM  GRANTED');
+     end if;
+
+     commit;
+
+exception
+    when no_data_found then
+         DBMS_OUTPUT.PUT_LINE('NO DATA FOUND');
+    when others then
+        DBMS_OUTPUT.PUT_LINE('OTHER EXCEPTION');
+        rollback;
+end;
+/
+
+//execution command 
+ EXEC chkAttendance(101);  -- Replace `101` with the Roll number of the student
+
+
+
+
     
     
 
